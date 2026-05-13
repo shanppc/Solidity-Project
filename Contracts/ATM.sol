@@ -2,11 +2,6 @@
 pragma solidity ^0.8.0;
 
 contract ATM {
-    address public owner;              
-
-    constructor() payable { // run once at deployment; allow contract to be created with ether
-        owner = msg.sender;           
-    }
 
     mapping(address => uint) public balances; // tracks how much each user has deposited
 
@@ -22,12 +17,16 @@ contract ATM {
     }
 
     // let a user take ether back (up to their stored balance)
-    function withdraw(uint _amount) public returns(uint) {
+    function withdraw(uint _amount) public {
         require(balances[msg.sender] >= _amount, "Insufficient Balance"); // enough funds?
-        balances[msg.sender] -= _amount;     
+        balances[msg.sender] -= _amount;  
+
+        (bool success,) = msg.sender.call{value: _amount}("");
+        require(success, "Transfer failed");
+
         emit Withdraw(msg.sender, _amount);  
-        payable(msg.sender).transfer(_amount); 
-        return _amount;
+       
+
     }
 
     // quick way for a user to check their stored balance
@@ -36,14 +35,4 @@ contract ATM {
     }
 
 
-    //  reverts if caller is not the stored owner
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not owner");
-        _;
-    }
-
-    // owner can drain entire contract balance in one call
-    function WithdrawAll() public onlyOwner {
-        payable(owner).transfer(address(this).balance);
-    }
 }

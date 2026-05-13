@@ -33,9 +33,10 @@ contract BasicWallet {
         require(_amount <= address(this).balance, "Not enough balance in the wallet"); // Revert
 
         totalDeposits -= _amount; // Update total deposits before transfer
-        payable(owner).transfer(_amount);
         
-        // Trigger Withdraw event here
+        (bool ok,) = owner.call{value: _amount}("");
+        require(ok, "Failed");
+        
         emit Withdraw(msg.sender, _amount, block.timestamp);
     }
 
