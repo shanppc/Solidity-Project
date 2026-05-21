@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 
 /**
+ * @author Zeeshan 
  * @title ZToken
  * @description  A ERC20 token contract without any librarey. 
  * @notice ERC20 token with pause functionality and minting controls
