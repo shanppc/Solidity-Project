@@ -1,0 +1,27 @@
+{
+  "types": {
+    "EIP712Domain": [
+      { "name": "name", "type": "string" },
+      { "name": "version", "type": "string" },
+      { "name": "chainId", "type": "uint256" },
+      { "name": "verifyingContract", "type": "address" }
+    ],
+    "Authorization": [
+      { "name": "recipient", "type": "address" },
+      { "name": "amount", "type": "uint256" },
+      { "name": "nonce", "type": "uint256" }
+    ]
+  },
+  "primaryType": "Authorization",
+  "domain": {
+    "name": "SignatureVerifier",
+    "version": "1",
+    "chainId": 11155111,
+    "verifyingContract": "CONTRACT_ADDRESS"
+  },
+  "message": {
+    "recipient": "0xRecipientAddress",
+    "amount": "100",
+    "nonce": "0"
+  }
+}
