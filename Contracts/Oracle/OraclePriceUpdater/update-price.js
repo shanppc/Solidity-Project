@@ -9,17 +9,11 @@ const {
 
 async function main() {
   const {
-    RPC_URL,
-    EXPECTED_CHAIN_ID,
-    ORACLE_ADDRESS,
     ORACLE_OWNER_PRIVATE_KEY,
     COINGECKO_API_KEY,
   } = process.env;
 
   if (
-    !RPC_URL ||
-    !EXPECTED_CHAIN_ID ||
-    !ORACLE_ADDRESS ||
     !ORACLE_OWNER_PRIVATE_KEY ||
     !COINGECKO_API_KEY
   ) {
@@ -69,17 +63,17 @@ async function main() {
   const scaledPrice = parseUnits(priceUsd.toFixed(8), 8);
 
   // 4. Connect to the blockchain and verify the network.
-  const provider = new JsonRpcProvider(RPC_URL);
+  const provider = new JsonRpcProvider("https://sepolia.base.org");
   const network = await provider.getNetwork();
 
-  if (network.chainId !== BigInt(EXPECTED_CHAIN_ID)) {
+  if (network.chainId !== BigInt(84532)) {
     throw new Error(`Unexpected chain ID: ${network.chainId}`);
   }
 
   const wallet = new Wallet(ORACLE_OWNER_PRIVATE_KEY, provider);
 
   const oracle = new Contract(
-    ORACLE_ADDRESS,
+    "0x621d12fbE73F1191bcE098fECcc6330ab931E563",
     [
       "function owner() view returns (address)",
       "function setPrice(int256 newPrice, uint256 sourceUpdatedAt)",

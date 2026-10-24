@@ -30,9 +30,6 @@ jobs:
 
       - name: Update oracle price
         env:
-          RPC_URL: ${{ secrets.RPC_URL }}
-          EXPECTED_CHAIN_ID: ${{ secrets.EXPECTED_CHAIN_ID }}
-          ORACLE_ADDRESS: ${{ secrets.ORACLE_ADDRESS }}
           ORACLE_OWNER_PRIVATE_KEY: ${{ secrets.ORACLE_OWNER_PRIVATE_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
         run: node update-price.js
