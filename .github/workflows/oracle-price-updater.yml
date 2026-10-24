@@ -1,0 +1,38 @@
+
+name: Oracle Price Updater
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 0 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  update-price:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Contracts/Oracle/OraclePriceUpdater
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update oracle price
+        env:
+          RPC_URL: ${{ secrets.RPC_URL }}
+          EXPECTED_CHAIN_ID: ${{ secrets.EXPECTED_CHAIN_ID }}
+          ORACLE_ADDRESS: ${{ secrets.ORACLE_ADDRESS }}
+          ORACLE_OWNER_PRIVATE_KEY: ${{ secrets.ORACLE_OWNER_PRIVATE_KEY }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+        run: node update-price.js
